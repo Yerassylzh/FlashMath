@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { api, AI_MODEL } from "../constants";
 import React from "react";
 import { AppStages, useApp } from "../context/useApp";
@@ -8,35 +8,42 @@ import EduCards from "./EduCards";
 import TestCards from "./TestCards";
 import ReviewScreen from "./ReviewScreen";
 import Http404 from "./Http404";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Wallpaper from "./Wallpaper";
 
-function App() {
+export default function App() {
   const [eduCards, setEduCards] = useState(null);
   const [testCards, setTestCards] = useState(null);
   const [topic, setTopic] = useState(null);
 
   const { appStage } = useApp();
 
-  if (appStage === AppStages.HOME) {
-    return <Home />;
-  }
+  let stageToUrl = useMemo(() => {
+    return {
+      [AppStages.HOME]: "/",
+      [AppStages.GENERATING]: "/wait/",
+      [AppStages.EDU]: "/edu/",
+      [AppStages.TEST]: "/test/",
+      [AppStages.REVIEW]: "/results/",
+    };
+  }, []);
 
-  if (appStage === AppStages.GENERATING) {
-    return <WaitingScreen />;
-  }
+  const navigate = useNavigate();
 
-  if (appStage === AppStages.EDU) {
-    return <EduCards />;
-  }
+  useEffect(() => {
+    navigate(stageToUrl[appStage]);
+  }, [appStage]);
 
-  if (appStage === AppStages.TEST) {
-    return <TestCards />;
-  }
-
-  if (appStage === AppStages.REVIEW) {
-    return <ReviewScreen />;
-  }
-
-  return <Http404 />;
+  return (
+    <React.Fragment>
+      <Routes>
+        <Route path="" element={<Home />} />
+        <Route path="/wait/" element={<WaitingScreen />} />
+        <Route path="/edu/" element={<EduCards />} />
+        <Route path="/test/" element={<TestCards />} />
+        <Route path="/results/" element={<ReviewScreen />} />
+        <Route path="*" element={<Http404 />} />
+      </Routes>
+    </React.Fragment>
+  );
 }
-
-export default App;

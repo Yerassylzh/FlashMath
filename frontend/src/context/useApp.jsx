@@ -14,10 +14,18 @@ export const AppStages = {
   REVIEW: "REVIEW",
 };
 
+export const BackgroundImageType = {
+  BLUR: "BLUR",
+  MATH: "MATH",
+};
+
 export default function AppProvider({ children }) {
   const [appStage, setAppStage] = useState(AppStages.HOME);
   const [eduCards, setEduCards] = useState(null);
   const [testCards, setTestCards] = useState(null);
+  const [backgroundImageType, setBackgroundImageType] = useState(
+    BackgroundImageType.BLUR
+  );
 
   const contextData = {
     appStage: appStage,
@@ -26,6 +34,8 @@ export default function AppProvider({ children }) {
     setEduCards: setEduCards,
     testCards: testCards,
     setTestCards: setTestCards,
+    backgroundImageType: backgroundImageType,
+    setBackgroundImageType: setBackgroundImageType,
   };
 
   return (
