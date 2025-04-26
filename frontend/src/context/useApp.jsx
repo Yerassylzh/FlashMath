@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { CARDS_CNT } from "../constants";
 
 const AppContext = createContext();
 
@@ -26,6 +27,10 @@ export default function AppProvider({ children }) {
   const [backgroundImageType, setBackgroundImageType] = useState(
     BackgroundImageType.BLUR
   );
+  const [prompt, setPrompt] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState(() => {
+    return Array(CARDS_CNT).fill(null);
+  });
 
   const contextData = {
     appStage: appStage,
@@ -36,6 +41,10 @@ export default function AppProvider({ children }) {
     setTestCards: setTestCards,
     backgroundImageType: backgroundImageType,
     setBackgroundImageType: setBackgroundImageType,
+    prompt: prompt,
+    setPrompt: setPrompt,
+    selectedOptions: selectedOptions,
+    setSelectedOptions: setSelectedOptions,
   };
 
   return (

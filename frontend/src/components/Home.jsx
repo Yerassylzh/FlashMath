@@ -1,49 +1,51 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { api, AI_MODEL } from "../constants";
 import React from "react";
-import { AppStages, useApp } from "../context/useApp";
+import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
 import { useToast } from "../context/useToast";
 import "../styles/Home.css";
 import $ from "jquery";
+import Header from "./Header";
+import { CARDS_CNT } from "../constants";
 
 const getEduCardsGenerationPrompt = (topic) => {
   return `
-    Создай 10 обучательных карточек по математике на тему: ${topic}.
+    Создай ${CARDS_CNT} обучательных карточек по математике на тему: ${topic}.4$
     Дай ответ ввиде корректного кода в JSON-формате: массив объектов, каждый объект содержит 3 поля: name, svg, explanation.
     
-      Каждая карточка должна быть объектом с пятью полями:
+    Каждая карточка должна быть объектом с 3 обьязательными полями:
       name — чёткое и осмысленное название темы (например, "Наибольшее значение квадратичной функции", а не просто "Функции 2").
-      svg — красивое, красочное и понятное SVG-изображение, которое визуально помогает понять тему. Используй элементы <path>, <circle>, <line>, и другие графические элементы. SVG должен быть содержательным и иметь смысл, соответствующий задаче. Если задача не требует рисунка (например, простая алгебра), поле svg всё равно может содержать простую визуализацию (например, координатную ось, стрелки, сетку).
+      svg — красивое, красочное и понятное SVG-изображение, которое визуально помогает понять тему. Используй элементы <path>, <circle>, <line>, <text> и другие графические элементы. SVG должен быть содержательным и иметь смысл, соответствующий задаче
       explanation — подробное, но простое объяснение, которое пошагово объясняет тему.
     Важно:
       Расположи карточки по возрастанию сложности (от более лёгких к более трудным).
       Составляй нестандартные и интересные темы.
       Сделай так, чтобы при конвертации твоего ответа в JSON, не было ошибок
+      Используй \`\`\`json в своем ответе, потому что я буду вырезать json и конвертировать в json обьект
   `;
 };
 
 const getTestCardsGenerationPrompt = (topic, genEduCards) => {
   return `
-    Создай 10 тестовых карточек по математике на тему: ${topic}.
+    Создай ${CARDS_CNT} тестовых карточек по математике на тему: ${topic}.
     Используй ниже приведенные темы и обучательные теории:
     ${JSON.stringify(genEduCards)}
-    Дай ответ ввиде корректного кода в JSON-формате: массив объектов, каждый объект содержит 5 полей: name, svg, problem, solution, explanation.
+    Дай ответ ввиде корректного кода в JSON-формате: массив объектов, каждый объект содержит 6 полей: name, problem, solutionOptions, solutionIndex, explanation, hint.
     
-    Каждая карточка должна быть объектом с пятью полями:
+    Каждая карточка должна быть объектом с 6 обьязательными полями:
       name — чёткое и осмысленное название задачи (например, "Наибольшее значение квадратичной функции", а не просто "Задача 3").
-      svg — красивое, красочное и понятное SVG-изображение, которое визуально помогает понять задачу. Используй элементы <path>, <circle>, <line>, и другие графические элементы. SVG должен быть содержательным и иметь смысл, соответствующий задаче. Если задача не требует рисунка (например, простая алгебра), поле svg всё равно может содержать простую визуализацию (например, координатную ось, стрелки, сетку).
       problem — чёткая и понятная формулировка задачи.
-      solution — числовой ответ в виде одного десятичного числа (например, "3.14").
+      solutionOptions — список из 4 вариантов числовых ответ в виде одного десятичного числа (например, "3.14", "77"), только один из которых является верным.
+      solutionIndex - (0..3) - число, показываюцяя какой из выше перечисленных ответов является правильным.
       explanation — подробное, но простое объяснение, которое пошагово объясняет решение задачи.
       hint - маленькая подсказка которая поможет решить задачу
     Важно:
       Расположи карточки по возрастанию сложности (от более лёгких к более трудным).
-      Последние задачи сделай очень сложными и интересными.
-      Используй разные задачи из разных источников.
       Составляй нестандартные задачи.
       Не повторяй задачи из обучательной теории, которую я дал тебе выше.
       Сделай так, чтобы при конвертации твоего ответа в JSON, не было ошибок
-  `;
+      Используй \`\`\`json в своем ответе, потому что я буду вырезать json и конвертировать в json обьект
+    `;
 };
 
 const generateEduCards = async (topic) => {
@@ -90,9 +92,17 @@ const generateTestCards = async (topic, eduCards) => {
   }
 };
 
-export default function Home({ onComplete }) {
-  const { setAppStage, eduCards, setEduCards, testCards, setTestCards } =
-    useApp();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+export default function Home() {
+  const {
+    setPrompt,
+    setAppStage,
+    eduCards,
+    setEduCards,
+    testCards,
+    setTestCards,
+  } = useApp();
 
   const { showToast } = useToast();
 
@@ -100,6 +110,37 @@ export default function Home({ onComplete }) {
     try {
       let genEduCards = await generateEduCards(topic);
       let genTestCards = await generateTestCards(topic, genEduCards);
+      // let genEduCards = [
+      //   {
+      //     name: "Circle",
+      //     explanation: "This is a circle",
+      //     svg: "No svg",
+      //   },
+      //   {
+      //     name: "Penis",
+      //     explanation: "This is black penis",
+      //     svg: "No svg",
+      //   },
+      // ];
+      // let genTestCards = [
+      //   {
+      //     name: "Circle",
+      //     explanation: "This is a circle",
+      //     problem: "Find the pi (2 decimal places)",
+      //     solutionIndex: 0,
+      //     solutionOptions: ["3.14", "3.13", "3.12", "3.11"],
+      //     hint: "Remember elementary math",
+      //   },
+      //   {
+      //     name: "Penis",
+      //     explanation: "This is a penis",
+      //     problem: "Find the pi (2 decimal places)",
+      //     solutionIndex: 0,
+      //     solutionOptions: ["3.14", "3.13", "3.12", "3.11"],
+      //     hint: "You really don't know?",
+      //   },
+      // ];
+      // await sleep(3000);
 
       setEduCards(genEduCards);
       setTestCards(genTestCards);
@@ -123,22 +164,23 @@ export default function Home({ onComplete }) {
 
   const handleSampleChoice = useCallback((e) => {
     e.preventDefault();
-
     document.getElementById("prompt").value = e.target.textContent;
   }, []);
 
   const handlePromptSubmition = useCallback((e) => {
     e.preventDefault();
     loadCards(document.getElementById("prompt").value);
+    setPrompt(document.getElementById("prompt").value);
     setAppStage(AppStages.GENERATING);
+  }, []);
+
+  const { setBackgroundImageType } = useApp();
+  useEffect(() => {
+    setBackgroundImageType(BackgroundImageType.BLUR);
   }, []);
 
   return (
     <React.Fragment>
-      <header className="py-4 px-6 md:px-10 lg:px-16 opacity-0 animate-fade-in animation-delay-500">
-        <div className="text-3xl font-extrabold">FlashMath</div>
-      </header>
-
       <main className="flex-grow flex items-center justify-center py-10 px-4">
         <div className="w-full max-w-xl text-center opacity-0 animate-fade-in-up">
           <span className="text-4xl mb-4 inline-block opacity-0 animate-fade-in-up animation-delay-600">
