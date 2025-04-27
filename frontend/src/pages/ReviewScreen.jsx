@@ -1,56 +1,10 @@
 import { useApp } from "../context/useApp";
 import ResultCard from "../components/ResultCard";
 import { useState, useEffect, useMemo } from "react";
-import $ from "jquery";
 import Confetti from "react-confetti";
-
-function animateProgressBar(percent) {
-  function animateProgress(targetPercent, duration) {
-    const circle = document.querySelector(".progress-ring__circle");
-    const text = document.getElementById("progressText");
-    const radius = circle.r.baseVal.value;
-    const circumference = 2 * Math.PI * radius;
-
-    circle.style.strokeDasharray = circumference;
-
-    let startTime = null;
-
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function animate(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-
-      let progress = Math.min(elapsed / duration, 1);
-      let easedProgress = easeOutCubic(progress);
-
-      const currentPercent = +(easedProgress * targetPercent).toFixed(0);
-      const offset =
-        circumference * (1 - (easedProgress * targetPercent) / 100);
-
-      circle.style.strokeDashoffset = offset;
-      text.textContent = `${currentPercent}%`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        text.textContent = `${targetPercent}%`;
-      }
-    }
-
-    circle.style.transition = "none";
-
-    requestAnimationFrame(animate);
-  }
-
-  animateProgress(percent, 1000);
-
-  setTimeout(() => {
-    $(".progress-ring__background").css("stroke", "#dc2626");
-  }, 1000);
-}
+import ProgressBar from "../components/ProgressBar";
+import useConfetti from "../hooks/useConfetti";
+import { formatSeconds } from "../utils";
 
 export default function ReviewScreen() {
   const {
@@ -61,6 +15,8 @@ export default function ReviewScreen() {
     testCards,
   } = useApp();
 
+  const [show, setShow, dimensions, setDimensions] = useConfetti(false);
+
   let totalScore = useMemo(() => {
     let total = 0;
     for (let i = 0; i < testCards.length; i++) {
@@ -69,20 +25,9 @@ export default function ReviewScreen() {
     return total;
   }, []);
 
-  const secondsElapsed = useMemo(() => {
-    return testEndTime - testStartTime;
-  }, []);
+  let percent = (totalScore / testCards.length) * 100;
 
-  const [show, setShow] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    setShow(true);
-    const timer = setTimeout(() => setShow(false), 5000);
-    animateProgressBar((totalScore / testCards.length) * 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const secondsElapsed = testEndTime - testStartTime;
 
   return (
     <>
@@ -95,13 +40,57 @@ export default function ReviewScreen() {
         />
       )}
       <main className="relative flex flex-col items-center justify-center p-2 sm:p-4 min-h-screen">
-        <ResultCard
-          totalScore={totalScore}
-          testCards={testCards}
-          selectedOptions={selectedOptions}
-          secondsElapsed={secondsElapsed}
-        />
+        <div className="w-[500px]">
+          <div className="flex flex-col justify-start align-center mb-8 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-100 mb-2">
+              {getFeedback(percent)}
+            </h1>
+            <p className="text-base sm:text-lg text-gray-200">
+              {`Время прохождения: ${formatSeconds(secondsElapsed)}`}
+            </p>
+            <div className="flex mt-2 gap-7">
+              <ProgressBar percent={percent} />
+              <div className="flex gap-5">
+                <div className="flex flex-col gap-2 justify-center">
+                  <div className="text-[16px] text-green-600">Верно</div>
+                  <div className="text-[16px] text-red-600">Неверно</div>
+                </div>
+                <div className="flex flex-col gap-2 justify-center">
+                  <div className="w-[40px] font-semibold flex justify-center text-green-600 bg-green-100 border-green-600 border-1 rounded-2xl">
+                    {totalScore}
+                  </div>
+                  <div className="w-[40px] font-semibold flex justify-center text-red-600 bg-red-100 border-red-600 border-1 rounded-2xl">
+                    {testCards.length - totalScore}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flashcard-container w-full flex flex-col items-center gap-5 justify-center mb-8">
+            {testCards.map((card, cardId) => (
+              <ResultCard
+                card={card}
+                cardId={cardId}
+                selectedOptions={selectedOptions}
+              />
+            ))}
+          </div>
+        </div>
       </main>
     </>
   );
+}
+
+function getFeedback(percent) {
+  if (percent <= 25) {
+    return "Не сдавайся!";
+  } else if (percent <= 50) {
+    return "Неплохо!";
+  } else if (percent <= 75) {
+    return "Хорошо!";
+  } else if (percent <= 90) {
+    return "Отлично!";
+  } else {
+    return "Превосходно!";
+  }
 }

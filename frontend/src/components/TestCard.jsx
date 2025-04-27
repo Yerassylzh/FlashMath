@@ -1,5 +1,7 @@
 import { useToast } from "../context/useToast";
 import { AppStages, useApp } from "../context/useApp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
 
 export default function TestCard({
   prompt,
@@ -30,8 +32,11 @@ export default function TestCard({
           <div className="flashcard-face flashcard-front w-full">
             <div className="flex flex-col w-full h-full items-start justify-between">
               <div className="gap-2 flex flex-col w-full items-start justify-start">
-                <button className="flex gap-2 cursor-pointer border-none outline-none">
-                  <i className="flex items-center content-center text-black text-[16px] fa-regular fa-lightbulb"></i>
+                <button className="flex items-center justify-start gap-2 cursor-pointer border-none outline-none">
+                  <FontAwesomeIcon
+                    className="flex items-center content-center text-black text-[16px]"
+                    icon={faLightbulb}
+                  />
                   <div
                     className="text-gray-700 text-[15px]"
                     onClick={(e) => {
