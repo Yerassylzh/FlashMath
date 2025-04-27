@@ -1,36 +1,21 @@
-import { useEffect, useState } from "react";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
-import { useRef } from "react";
-import $ from "jquery";
-
-import "../styles/TestCards.css";
 import { useToast } from "../context/useToast";
+import { AppStages, useApp } from "../context/useApp";
 
-export default function TestCards() {
-  const {
-    selectedOptions,
-    setSelectedOptions,
-    prompt,
-    setAppStage,
-    testCards,
-    setBackgroundImageType,
-  } = useApp();
-
+export default function TestCard({
+  prompt,
+  currentCard,
+  setSelectedOptions,
+  selectedOptions,
+  testCards,
+  currentCardIndex,
+  setCurrentCardIndex,
+  setAppStage,
+}) {
   const { showToast } = useToast();
-
-  useEffect(() => {
-    setBackgroundImageType(BackgroundImageType.MATH);
-  }, []);
-
-  const [currentCardIndex, setCurrentCardIndex] = useState(1);
-  const [currentCard, setCurrentCard] = useState(testCards[0]);
-
-  useEffect(() => {
-    setCurrentCard(testCards[currentCardIndex - 1]); // 0 based indexing
-  }, [currentCardIndex]);
+  const { setTestEndTime } = useApp();
 
   return (
-    <main className="flex flex-col items-center justify-center p-2 sm:p-4 min-h-screen">
+    <>
       <div className="text-center mb-8 sm:mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-100 mb-2">
           {prompt}
@@ -66,20 +51,21 @@ export default function TestCards() {
                 <div className="w-full grid grid-cols-2 gap-4 place-items-center text-[16px] text-gray-600">
                   {currentCard.solutionOptions.map((option, id) => (
                     <button
-                      id={`s-o-${id}`}
+                      data-index={id}
                       key={`s-o-${id}`}
                       className={
-                        selectedOptions[currentCardIndex - 1] == null ||
+                        (selectedOptions[currentCardIndex - 1] == null ||
                         selectedOptions[currentCardIndex - 1] !== id
-                          ? "cursor-pointer w-full pt-1 pb-1 border-1 hover:border-blue-500 border-gray-400 rounded-[5px]"
-                          : "cursor-pointer w-full pt-1 pb-1 border-1 hover:border-blue-500 border-blue-500 bg-gray-100 rounded-[5px]"
+                          ? "hover:border-blue-500 border-gray-200"
+                          : "hover:border-blue-500 border-blue-500 bg-gray-100") +
+                        " rounded-[5px] cursor-pointer w-full pt-2 pb-2 pl-2 pr-2 border-1 flex justify-start items-center"
                       }
                       onClick={(e) => {
                         e.preventDefault();
                         setSelectedOptions((prevSelectedOptions) => {
                           let newOptions = [...prevSelectedOptions];
                           newOptions[currentCardIndex - 1] = parseInt(
-                            e.target.id.replace("s-o-", "")
+                            e.target.dataset.index
                           );
                           return newOptions;
                         });
@@ -136,6 +122,7 @@ export default function TestCards() {
                 return;
               }
               if (currentCardIndex == testCards.length) {
+                setTestEndTime(Date.now() * 1000);
                 setAppStage(AppStages.REVIEW);
                 return;
               }
@@ -171,6 +158,6 @@ export default function TestCards() {
           ></div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

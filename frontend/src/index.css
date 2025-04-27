@@ -35,3 +35,48 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+.progress-container {
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring__background,
+.progress-ring__circle {
+  fill: none;
+  stroke-width: 14;
+}
+
+.progress-ring__background {
+  stroke: transparent;
+}
+
+.progress-ring__circle {
+  /* stroke: radial-gradient(circle, #ff5733, #33ff57); */
+  stroke: #16a34a;
+  /* stroke-linecap: round; */
+  stroke-dasharray: 439.82;
+  stroke-dashoffset: 439.82;
+  transition: stroke-dashoffset 0.8s ease-in-out;
+  /* filter: drop-shadow(0 0 6px rgba(0, 198, 255, 0.6)); */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#fireworks {
+  position: absolute;
+}

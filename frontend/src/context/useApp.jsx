@@ -32,6 +32,9 @@ export default function AppProvider({ children }) {
     return Array(CARDS_CNT).fill(null);
   });
 
+  const [testStartTime, setTestStartTime] = useState(null);
+  const [testEndTime, setTestEndTime] = useState(null);
+
   const contextData = {
     appStage: appStage,
     setAppStage: setAppStage,
@@ -45,6 +48,10 @@ export default function AppProvider({ children }) {
     setPrompt: setPrompt,
     selectedOptions: selectedOptions,
     setSelectedOptions: setSelectedOptions,
+    testStartTime: testStartTime,
+    setTestStartTime: setTestStartTime,
+    testEndTime: testEndTime,
+    setTestEndTime: setTestEndTime,
   };
 
   return (

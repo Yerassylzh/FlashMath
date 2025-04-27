@@ -6,7 +6,7 @@ import WaitingScreen from "./WaitingScreen";
 import EduCards from "./EduCards";
 import TestCards from "./TestCards";
 import ReviewScreen from "./ReviewScreen";
-import Header from "./Header";
+import Header from "../components/Header";
 
 export default function App() {
   const { appStage } = useApp();

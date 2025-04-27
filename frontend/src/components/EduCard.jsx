@@ -1,41 +1,19 @@
-import { useEffect, useState } from "react";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
-import { useRef } from "react";
+import { useApp } from "../context/useApp";
+import { AppStages } from "../context/useApp";
+
+import "../styles/EduCard.css";
 import $ from "jquery";
 
-import "../styles/EduCards.css";
-
-export default function EduCards() {
-  const { prompt, setAppStage, eduCards, testCards, setBackgroundImageType } =
-    useApp();
-
-  useEffect(() => {
-    setBackgroundImageType(BackgroundImageType.MATH);
-  }, []);
-
-  const [currentCardIndex, setCurrentCardIndex] = useState(1);
-  const [currentCard, setCurrentCard] = useState(eduCards[0]);
-
-  useEffect(() => {
-    setCurrentCard(eduCards[currentCardIndex - 1]); // 0 based indexing
-    $("#flashcard").removeClass("is-flipped");
-    if (currentCardIndex === eduCards.length) {
-      $("#start-test-btn").css("display", "flex");
-    } else {
-      $("#start-test-btn").css("display", "none");
-    }
-
-    currentCardIndex == eduCards.length
-      ? $("#next-button").attr("disabled", "true")
-      : $("#next-button").removeAttr("disabled");
-
-    currentCardIndex == 1
-      ? $("#prev-button").attr("disabled", "true")
-      : $("#prev-button").removeAttr("disabled");
-  }, [currentCardIndex]);
+export default function EduCard({
+  prompt,
+  currentCard,
+  currentCardIndex,
+  setCurrentCardIndex,
+}) {
+  const { eduCards, setAppStage } = useApp();
 
   return (
-    <main className="flex flex-col items-center justify-center p-2 sm:p-4 min-h-screen">
+    <>
       <div className="text-center mb-8 sm:mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-100 mb-2">
           {prompt}
@@ -149,6 +127,6 @@ export default function EduCards() {
           Начать Тест
         </button>
       </div>
-    </main>
+    </>
   );
 }

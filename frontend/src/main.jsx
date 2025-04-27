@@ -1,11 +1,11 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./components/App";
+import App from "./pages/App";
 import { ToastProvider } from "./context/useToast";
 import AppProvider from "./context/useApp";
 import { Route, Routes, Router, BrowserRouter } from "react-router-dom";
 import Wallpaper from "./components/Wallpaper";
-import Http404 from "./components/Http404";
+import Http404 from "./pages/Http404";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
