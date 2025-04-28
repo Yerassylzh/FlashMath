@@ -139,7 +139,7 @@ export default function Home() {
           hint: "You really don't know?",
         },
       ];
-      await sleep(1000);
+      await sleep(4000);
 
       setEduCards(genEduCards);
       setTestCards(genTestCards);

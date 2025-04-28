@@ -13,13 +13,13 @@ const Wallpaper = () => {
       tails: 90,
       animate: true,
       scrollAnimate: true,
-      colors: ["#527bdd", "#009fdd", "#a4dbff"],
+      colors: ["#1a2238", "#1e3a8a", "#4c1d95", "#6d28d9"],
       pattern: {
         image: "https://twallpaper.js.org/patterns/math.svg",
         background: "#000",
         blur: 0,
         size: "400px",
-        opacity: backgroundImageType == BackgroundImageType.BLUR ? 0.1 : 0.3,
+        opacity: backgroundImageType == BackgroundImageType.BLUR ? 0 : 0.3,
         mask: false,
       },
     };

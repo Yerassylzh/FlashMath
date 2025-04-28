@@ -80,3 +80,29 @@ button:disabled {
 #fireworks {
   position: absolute;
 }
+
+.waiting-text {
+  background: linear-gradient(
+    to right,
+    gray 0%,
+    gray 40%,
+    white 50%,
+    gray 60%,
+    gray 100%
+  );
+  background-size: 200% 100%;
+  background-position: -100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: moveLight 2s linear infinite;
+}
+
+@keyframes moveLight {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
