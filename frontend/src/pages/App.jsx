@@ -7,6 +7,7 @@ import EduCards from "./EduCards";
 import TestCards from "./TestCards";
 import ReviewScreen from "./ReviewScreen";
 import Header from "../components/Header";
+import Http404 from "./Http404";
 
 export default function App() {
   const { appStage } = useApp();
@@ -24,7 +25,7 @@ export default function App() {
   return (
     <>
       <Header />
-      {stageToComponent[appStage]}
+      {!stageToComponent[appStage] ? <Http404 /> : stageToComponent[appStage]}
     </>
   );
 }

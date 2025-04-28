@@ -3,8 +3,8 @@ import ResultCard from "../components/ResultCard";
 import { useState, useEffect, useMemo } from "react";
 import Confetti from "react-confetti";
 import ProgressBar from "../components/ProgressBar";
-import useConfetti from "../hooks/useConfetti";
 import { formatSeconds } from "../utils";
+import ConfettiComponent from "../components/ConfettiComponent";
 
 export default function ReviewScreen() {
   const {
@@ -14,8 +14,6 @@ export default function ReviewScreen() {
     setSelectedOptions,
     testCards,
   } = useApp();
-
-  const [show, setShow, dimensions, setDimensions] = useConfetti(false);
 
   let totalScore = useMemo(() => {
     let total = 0;
@@ -31,14 +29,7 @@ export default function ReviewScreen() {
 
   return (
     <>
-      {show && (
-        <Confetti
-          width={dimensions.width}
-          height={dimensions.height}
-          numberOfPieces={300}
-          gravity={0.2}
-        />
-      )}
+      <ConfettiComponent />
       <main className="relative flex flex-col items-center justify-center p-2 sm:p-4 min-h-screen">
         <div className="w-[500px]">
           <div className="flex flex-col justify-start align-center mb-8 sm:mb-8">

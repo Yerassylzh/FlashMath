@@ -1,13 +1,44 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import calculatorIcon from "../../public/calculator.png"; // Correct relative path
 import GradientCircle from "../components/GradientCircle";
 import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
+import $ from "jquery";
+
+const factsList = [
+  "Число Пи (π) - бесконечно и не повторяется",
+  "Ноль (0) был впервые использован в Индии в V веке",
+  "Формула Эйлера  объединяет пять фундаментальных чисел",
+  "Треугольник Паскаля предсказывает коэффициенты бинома Ньютона",
+  "Число 9 уникально: произведение цифр любого кратного 9 снова кратно 9",
+  "Математика — универсальный язык, понятный без перевода",
+  "Фибоначчи впервые описал свою знаменитую последовательность, изучая размножение кроликов",
+  "Шестиугольники — самая эффективная форма заполнения пространства (например, у пчёл)",
+  "Самая большая известная простая числа имеет миллионы цифр!",
+  "Фракталы — бесконечно сложные фигуры, в которых каждый кусочек повторяет целое",
+];
 
 export default function WaitingScreen() {
   const { setBackgroundImageType } = useApp();
+
   useEffect(() => {
     setBackgroundImageType(BackgroundImageType.MATH);
+
+    const intervalId = setInterval(() => {
+      $("#fact").removeClass("fact-appearing");
+      $("#fact").addClass("fact-disappearing");
+
+      const id1 = setTimeout(() => {
+        $("#fact").removeClass("fact-disappearing");
+        $("#fact").addClass("fact-appearing");
+        setCurrentCardIndex((prev) => (prev + 1) % factsList.length);
+        clearTimeout(id1);
+      }, 1000);
+    }, 4000);
+
+    return () => clearInterval(intervalId);
   }, []);
+
+  const [currentFactIndex, setCurrentCardIndex] = useState(0);
 
   return (
     <main className="flex-grow flex flex-col gap-30 items-center justify-center py-10 px-4 min-h-screen overflow-x-hidden">
@@ -113,13 +144,13 @@ export default function WaitingScreen() {
         </div>
       </div>
 
-      <div className="xl:w-[500px] md:w-[300px] sm:w-[300px] rounded-2xl gap-3 pt-2 pb-3 pl-5 pr-5 flex flex-col justify-start items-start bg-white shadow-2xl">
+      <div className="xl:w-[500px] md:w-[400px] sm:w-[300px] rounded-2xl gap-3 pt-2 pb-3 pl-5 pr-5 flex flex-col justify-start items-start bg-white shadow-2xl">
         <div className="text-[20px] font-bold text-black w-full flex justify-center">
           Факты
         </div>
         <div className="flex w-full justify-center align-center gap-3">
-          <div className="text-black">
-            Число Пи (π) - бесконечно и не повторяется
+          <div className="text-black fact-appearing" id="fact">
+            {factsList[currentFactIndex]}
           </div>
         </div>
       </div>

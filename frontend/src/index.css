@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  overflow-x: hidden;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -105,4 +109,16 @@ button:disabled {
   100% {
     background-position: -100% 0;
   }
+}
+
+.fact-disappearing {
+  opacity: 0;
+  transition: opacity;
+  transition-duration: 1s;
+}
+
+.fact-appearing {
+  opacity: 1;
+  transition: opacity;
+  transition-duration: 1s;
 }

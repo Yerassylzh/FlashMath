@@ -107,39 +107,8 @@ export default function Home() {
 
   const loadCards = useCallback(async (topic) => {
     try {
-      // let genEduCards = await generateEduCards(topic);
-      // let genTestCards = await generateTestCards(topic, genEduCards);
-      let genEduCards = [
-        {
-          name: "Circle",
-          explanation: "This is a circle",
-          svg: "No svg",
-        },
-        {
-          name: "Penis",
-          explanation: "This is black penis",
-          svg: "No svg",
-        },
-      ];
-      let genTestCards = [
-        {
-          name: "Circle",
-          explanation: "This is a circle",
-          problem: "Find the pi (2 decimal places)",
-          solutionIndex: 0,
-          solutionOptions: ["3.14", "3.13", "3.12", "3.11"],
-          hint: "Remember elementary math",
-        },
-        {
-          name: "Penis",
-          explanation: "This is a penis",
-          problem: "Find the pi (2 decimal places)",
-          solutionIndex: 0,
-          solutionOptions: ["3.14", "3.13", "3.12", "3.11"],
-          hint: "You really don't know?",
-        },
-      ];
-      await sleep(4000);
+      let genEduCards = await generateEduCards(topic);
+      let genTestCards = await generateTestCards(topic, genEduCards);
 
       setEduCards(genEduCards);
       setTestCards(genTestCards);
@@ -175,7 +144,7 @@ export default function Home() {
 
   const { setBackgroundImageType } = useApp();
   useEffect(() => {
-    setBackgroundImageType(BackgroundImageType.BLUR);
+    setBackgroundImageType(BackgroundImageType.MATH);
   }, []);
 
   return (
@@ -204,7 +173,7 @@ export default function Home() {
               id="submit-prompt"
               aria-label="Submit topic"
               onClick={handlePromptSubmition}
-              className="absolute cursor-pointer right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white rounded-md p-1.5 flex items-center justify-center transition duration-150 ease-in-out"
+              className="absolute cursor-pointer right-2 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-200 text-blue-600 rounded-4xl p-1.5 flex items-center justify-center transition duration-150 ease-in-out"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
