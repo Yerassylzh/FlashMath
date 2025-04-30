@@ -1,0 +1,55 @@
+.flashcard-container {
+  perspective: 1000px;
+}
+.flashcard {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  cursor: default;
+}
+.flashcard-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Safari */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05),
+    0 4px 6px -4px rgb(0 0 0 / 0.05); /* Softer shadow like reference */
+  padding: 1.5rem; /* p-6 */
+  text-align: center;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; /* Adjust size as needed */
+  height: 36px;
+  border-radius: 9999px; /* rounded-full */
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+.nav-button.active {
+  border-color: #3b82f6; /* border-blue-500 */
+  background-color: white;
+  color: #3b82f6; /* text-blue-500 */
+}
+.nav-button.inactive {
+  background-color: #f9fafb; /* bg-gray-50 */
+  color: #9ca3af; /* text-gray-400 */
+}
+.nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

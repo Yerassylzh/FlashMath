@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
-import { useRef } from "react";
+import { BackgroundImageType, useApp } from "../../context/useApp";
 import $ from "jquery";
-import EduCard from "../components/EduCard";
+
+import EduCard from "./components/EduCard";
+import "./EduCards.module.css";
 
 export default function EduCards() {
   const { prompt, setAppStage, eduCards, testCards, setBackgroundImageType } =

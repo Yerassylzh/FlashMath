@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useMemo } from "react";
-import { BackgroundImageType, useApp } from "../context/useApp";
+import { BackgroundImageType, useApp } from "../../context/useApp";
 import { TWallpaper } from "@twallpaper/react";
 import "@twallpaper/react/css";
 

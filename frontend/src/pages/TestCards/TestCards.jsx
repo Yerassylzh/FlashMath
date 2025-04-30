@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
-import { useRef } from "react";
-import $ from "jquery";
+import { AppStages, BackgroundImageType, useApp } from "../../context/useApp";
 
-import "../styles/TestCards.css";
-import { useToast } from "../context/useToast";
-import TestCard from "../components/TestCard";
+import "./TestCards.module.css";
+import { useToast } from "../../context/useToast";
+import TestCard from "./components/TestCard";
 
 export default function TestCards() {
   const {

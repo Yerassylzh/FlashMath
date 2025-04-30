@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { api, AI_MODEL } from "../constants";
+import { api, AI_MODEL, CARDS_CNT } from "../../constants";
 import React from "react";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
-import { useToast } from "../context/useToast";
-import "../styles/Home.css";
-import $ from "jquery";
-import { CARDS_CNT } from "../constants";
+import { AppStages, BackgroundImageType, useApp } from "../../context/useApp";
+import { useToast } from "../../context/useToast";
+
+import styles from "./Home.module.css";
 
 const getEduCardsGenerationPrompt = (topic) => {
   return `
@@ -150,18 +149,28 @@ export default function Home() {
   return (
     <React.Fragment>
       <main className="flex-grow flex items-center justify-center py-10 px-4">
-        <div className="w-full max-w-xl text-center opacity-0 animate-fade-in-up">
-          <span className="text-4xl mb-4 inline-block opacity-0 animate-fade-in-up animation-delay-600">
+        <div
+          className={`w-full max-w-xl text-center opacity-0 ${styles["animate-fade-in-up"]}`}
+        >
+          <span
+            className={`text-4xl mb-4 inline-block opacity-0 ${styles["animate-fade-in-up"]} ${styles["animation-delay-600"]}`}
+          >
             👋
           </span>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 opacity-0 animate-fade-in-up animation-delay-700">
+          <h1
+            className={`text-3xl md:text-4xl font-bold mb-3 opacity-0 ${styles["animate-fade-in-up"]} ${styles["animation-delay-700"]}`}
+          >
             Добро пожаловать в FlashMath!
           </h1>
-          <p className="text-gray-200 mb-8 text-base md:text-lg opacity-0 animate-fade-in-up animation-delay-800">
+          <p
+            className={`text-gray-200 mb-8 text-base md:text-lg opacity-0 ${styles["animate-fade-in-up"]} ${styles["animation-delay-800"]}`}
+          >
             Введите тему по математике, и мы создадим карточки специально для
             тебя!
           </p>
-          <div className="relative mb-5 opacity-0 animate-fade-in-up animation-delay-900">
+          <div
+            className={`relative mb-5 opacity-0 ${styles["animate-fade-in-up"]} ${styles["animation-delay-900"]}`}
+          >
             <input
               type="text"
               placeholder="Введите тему..."
@@ -191,7 +200,9 @@ export default function Home() {
               </svg>
             </button>
           </div>
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3 opacity-0 animate-fade-in-up animation-delay-1000">
+          <div
+            className={`flex flex-wrap justify-center gap-2 md:gap-3 opacity-0 ${styles["animate-fade-in-up"]} ${styles["animation-delay-1000"]}`}
+          >
             {topicSamples.map((topic, id) => (
               <button
                 key={id}

@@ -4,8 +4,7 @@
 .flashcard {
   position: relative;
   width: 100%;
-  max-width: 500px; /* Adjust as needed */
-  height: 320px; /* Adjust as needed */
+  height: 350px;
   transform-style: preserve-3d;
   transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
   cursor: pointer;

@@ -1,8 +1,8 @@
-import { useApp } from "../context/useApp";
-import { AppStages } from "../context/useApp";
+import { useApp, AppStages } from "../../../context/useApp";
 
-import "../styles/EduCard.css";
 import $ from "jquery";
+
+import styles from "../EduCards.module.css";
 
 export default function EduCard({
   prompt,
@@ -23,13 +23,15 @@ export default function EduCard({
         </p>
       </div>
 
-      <div className="flashcard-container w-full flex justify-center mb-8">
+      <div
+        className={`${styles["flashcard-container"]} flex justify-center mb-8 xl:w-[500px] md:w-[500px] sm:w-[400px] w-full`}
+      >
         <div
           id="flashcard"
-          onClick={(e) => $("#flashcard").toggleClass("is-flipped")}
-          className="flashcard"
+          onClick={(e) => $("#flashcard").toggleClass(styles["is-flipped"])}
+          className={`${styles["flashcard"]}`}
         >
-          <div className="flashcard-face flashcard-front">
+          <div className={`${styles["flashcard-face"]}`}>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-black px-3 py-1 rounded inline-block">
               {currentCard.name}
             </h2>
@@ -38,7 +40,7 @@ export default function EduCard({
             </p>
           </div>
           <div
-            className="flashcard-face flashcard-back"
+            className={`${styles["flashcard-face"]} ${styles["flashcard-back"]}`}
             dangerouslySetInnerHTML={{ __html: currentCard.svg }}
           ></div>
         </div>
@@ -48,7 +50,7 @@ export default function EduCard({
         <div className="flex items-center justify-center space-x-4 mb-4">
           <button
             id="prev-button"
-            className="nav-button bg-white cursor-pointer"
+            className={`${styles["nav-button"]} bg-white cursor-pointer`}
             aria-label="Previous card"
             onClick={(e) =>
               setCurrentCardIndex(Math.max(1, currentCardIndex - 1))
@@ -79,7 +81,7 @@ export default function EduCard({
 
           <button
             id="next-button"
-            className="nav-button bg-white cursor-pointer hover"
+            className={`${styles["nav-button"]} bg-white cursor-pointer hover`}
             aria-label="Next card"
             onClick={(e) =>
               setCurrentCardIndex(

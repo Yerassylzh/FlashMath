@@ -1,7 +1,9 @@
-import { useToast } from "../context/useToast";
-import { AppStages, useApp } from "../context/useApp";
+import { useToast } from "../../../context/useToast";
+import { AppStages, useApp } from "../../../context/useApp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
+
+import styles from "../TestCards.module.css";
 
 export default function TestCard({
   prompt,
@@ -27,9 +29,13 @@ export default function TestCard({
         </p>
       </div>
 
-      <div className="flashcard-container w-full flex justify-center mb-8">
-        <div id="flashcard" className="flashcard">
-          <div className="flashcard-face flashcard-front w-full">
+      <div
+        className={`${styles["flashcard-container"]} flex justify-center mb-8 xl:w-[500px] md:w-[500px] sm:w-[400px] w-full`}
+      >
+        <div id="flashcard" className={`${styles["flashcard"]}`}>
+          <div
+            className={`${styles["flashcard-face"]} ${styles["flashcard-front"]} w-full`}
+          >
             <div className="flex flex-col w-full h-full items-start justify-between">
               <div className="gap-2 flex flex-col w-full items-start justify-start">
                 <button className="flex items-center justify-start gap-2 cursor-pointer border-none outline-none">
@@ -90,7 +96,7 @@ export default function TestCard({
         <div className="flex items-center justify-center space-x-4 mb-4">
           <button
             id="prev-button"
-            className="nav-button bg-white cursor-pointer"
+            className={`${styles["nav-button"]} bg-white cursor-pointer`}
             aria-label="Previous card"
             disabled
           >
@@ -119,7 +125,7 @@ export default function TestCard({
 
           <button
             id="next-button"
-            className="nav-button bg-white cursor-pointer hover"
+            className={`${styles["nav-button"]} bg-white cursor-pointer hover`}
             aria-label="Next card"
             onClick={(e) => {
               if (selectedOptions[currentCardIndex - 1] == null) {

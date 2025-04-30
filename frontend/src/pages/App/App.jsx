@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import React from "react";
-import { AppStages, useApp } from "../context/useApp";
-import Home from "./Home";
-import WaitingScreen from "./WaitingScreen";
-import EduCards from "./EduCards";
-import TestCards from "./TestCards";
-import ReviewScreen from "./ReviewScreen";
-import Header from "../components/Header";
-import Http404 from "./Http404";
+import { AppStages, useApp } from "../../context/useApp";
+import Home from "../Home/Home";
+import WaitingScreen from "../WaitingScreen/WaitingScreen";
+import EduCards from "../EduCards/EduCards";
+import TestCards from "../TestCards/TestCards";
+import ReviewScreen from "../ReviewScreen/ReviewScreen";
+import Header from "../../components/Header";
+import Http404 from "../Http404/Http404";
 
 export default function App() {
   const { appStage } = useApp();

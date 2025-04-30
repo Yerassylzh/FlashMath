@@ -4,12 +4,12 @@
 .flashcard {
   position: relative;
   width: 100%;
-  max-width: 500px;
   height: 320px;
   transform-style: preserve-3d;
   transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
-  cursor: default;
+  cursor: pointer;
 }
+
 .flashcard-face {
   position: absolute;
   top: 0;
@@ -28,6 +28,12 @@
     0 4px 6px -4px rgb(0 0 0 / 0.05); /* Softer shadow like reference */
   padding: 1.5rem; /* p-6 */
   text-align: center;
+}
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+.flashcard.is-flipped {
+  transform: rotateY(180deg);
 }
 
 .nav-button {

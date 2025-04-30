@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import $ from "jquery";
-import { useState } from "react";
 
 function animateProgress(targetPercent, duration) {
   const circle = document.querySelector(".progress-ring__circle");

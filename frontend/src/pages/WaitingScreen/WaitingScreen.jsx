@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import calculatorIcon from "../../public/calculator.png"; // Correct relative path
-import GradientCircle from "../components/GradientCircle";
-import { AppStages, BackgroundImageType, useApp } from "../context/useApp";
+import GradientCircle from "../ReviewScreen/components/GradientCircle";
+import { BackgroundImageType, useApp } from "../../context/useApp";
 import $ from "jquery";
 
 const factsList = [
@@ -144,7 +143,7 @@ export default function WaitingScreen() {
         </div>
       </div>
 
-      <div className="xl:w-[500px] md:w-[400px] sm:w-[300px] rounded-2xl gap-3 pt-2 pb-3 pl-5 pr-5 flex flex-col justify-start items-start bg-white shadow-2xl">
+      <div className="text-center xl:w-[500px] md:w-[400px] sm:w-[300px] rounded-2xl gap-3 pt-2 pb-3 pl-5 pr-5 flex flex-col justify-start items-start bg-white shadow-2xl">
         <div className="text-[20px] font-bold text-black w-full flex justify-center">
           Факты
         </div>

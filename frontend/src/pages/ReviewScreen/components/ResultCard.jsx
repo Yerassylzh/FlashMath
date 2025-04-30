@@ -1,18 +1,18 @@
-import { useToast } from "../context/useToast";
-import { formatSeconds } from "../utils";
-import { useEffect } from "react";
-import $ from "jquery";
-import { useApp } from "../context/useApp";
+import { useApp } from "../../../context/useApp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLightbulb } from "@fortawesome/free-regular-svg-icons";
+
+import styles from "../ReviewScreen.module.css";
 
 export default function ResultCard({ card, cardId, selectedOptions }) {
   const { testCards } = useApp();
 
   return (
     <>
-      <div key={`${card}-${cardId}`} className="flashcard">
-        <div className="flashcard-face flashcard-front w-full">
+      <div id="flashcard" className={`${styles["flashcard"]}`}>
+        <div
+          className={`${styles["flashcard-face"]} ${styles["flashcard-front"]} w-full`}
+        >
           <div className="flex flex-col w-full h-full items-start justify-between">
             <div className="gap-2 flex flex-col w-full items-start justify-start">
               <div className="w-full flex items-center justify-start">
@@ -33,7 +33,7 @@ export default function ResultCard({ card, cardId, selectedOptions }) {
                 {card.solutionOptions.map((option, id) => (
                   <button
                     data-index={id}
-                    key={`${option}-${id}`}
+                    key={id}
                     className={
                       (card.solutionIndex === id &&
                       id == selectedOptions[cardId]
@@ -113,8 +113,9 @@ export default function ResultCard({ card, cardId, selectedOptions }) {
                 className="text-gray-700 text-[15px]"
                 onClick={(e) => {
                   e.preventDefault();
-                  const panel =
-                    e.target.closest(".flashcard").nextElementSibling;
+                  const panel = e.target.closest(
+                    `.${styles["flashcard"]}`
+                  ).nextElementSibling;
                   panel.classList.toggle("hidden");
                 }}
               >
@@ -124,7 +125,7 @@ export default function ResultCard({ card, cardId, selectedOptions }) {
           </div>
         </div>
       </div>
-      <div className="bg-white w-[500px] p-[1.5rem] rounded-2xl hidden">
+      <div className="bg-white w-full p-[1.5rem] rounded-2xl hidden">
         <div className="mt-2 gap-2 flex flex-col justify-start">
           <div className="font-medium text-black">Решение от ИИ</div>
           <div className="text-black">{card.explanation}</div>
